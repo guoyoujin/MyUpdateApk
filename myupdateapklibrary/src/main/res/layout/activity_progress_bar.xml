@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dialogactivity.ProgressBarActivity">
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/material_card"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="25dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="正在下载："
+            android:textSize="18sp" />
+        <ProgressBar
+            android:id="@+id/downloaddialog_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:progressDrawable="@drawable/bg_progress" />
+        <TextView
+            android:id="@+id/downloaddialog_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#ff239ff2"
+            tools:text="80%" />
+        <ImageView
+            android:id="@+id/downloaddialog_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_close_white_24dp" />
+    </LinearLayout>
+</RelativeLayout>
