@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 
 public class BinaryModel implements Serializable{
-    private  int fsize;
+    private  long fsize;
 
     @Override
     public String toString() {
@@ -22,11 +22,11 @@ public class BinaryModel implements Serializable{
         return sb.toString();
     }
 
-    public int getFsize() {
+    public long getFsize() {
         return fsize;
     }
 
-    public void setFsize(int fsize) {
+    public void setFsize(long fsize) {
         this.fsize = fsize;
     }
 }

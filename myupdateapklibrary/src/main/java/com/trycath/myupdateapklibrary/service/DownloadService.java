@@ -57,7 +57,7 @@ public class DownloadService extends IntentService implements ProgressResponseLi
                 .setAutoCancel(true);
         notificationManager.notify(0, notificationBuilder.build());
         download();
-        ProgressBarActivity.startActivity(this);
+        ProgressBarActivity.startActivity(this,appInfoModel);
     }
 
     private void download() {

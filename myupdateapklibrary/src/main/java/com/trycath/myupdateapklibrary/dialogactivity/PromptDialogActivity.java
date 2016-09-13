@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.trycath.myupdateapklibrary.R;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.service.DownloadService;
+import com.trycath.myupdateapklibrary.util.StringUtils;
 
 
 public class PromptDialogActivity extends AppCompatActivity{
@@ -37,6 +38,7 @@ public class PromptDialogActivity extends AppCompatActivity{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +66,12 @@ public class PromptDialogActivity extends AppCompatActivity{
         });
         
     }
+    
     private void initContent(){
-        tvVersion.setText(String.format("最新版本：%s",appInfoModel.getVersionShort()));
+        tvVersion.setText(String.format("%s：%s",getResources().getString(R.string.most_version),appInfoModel.getVersionShort()));
         double size = (double)appInfoModel.getBinary().getFsize();
-        tvSize.setText(String.format("新版本大小：%s",String.format("%.2f",size/1024000)));
-        tvContent.setText(String.format("更新内容\n%s",appInfoModel.getChangelog()));
+        tvSize.setText(String.format("%s：%s",getResources().getString(R.string.new_version_size), StringUtils.getDataSize(appInfoModel.getBinary().getFsize())));
+        tvContent.setText(String.format("%s\n%s",getResources().getString(R.string.update_content),appInfoModel.getChangelog()));
     }
    
     View.OnClickListener nowUpdateListener = new View.OnClickListener() {
@@ -112,6 +115,7 @@ public class PromptDialogActivity extends AppCompatActivity{
         intent.putExtra(INTENT_DOWNLOAD_MODEL,appInfoModel);
         context.startActivity(intent);
     }
+    
     public void startService(){
         DownloadService.startDownloadService(PromptDialogActivity.this,appInfoModel);
         finish();

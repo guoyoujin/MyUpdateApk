@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.trycath.myupdateapklibrary.R;
+import com.trycath.myupdateapklibrary.UpdateKey;
+import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.model.DownloadModel;
 import com.trycath.myupdateapklibrary.rxbus.RxBus;
 import com.trycath.myupdateapklibrary.rxbus.RxBusResult;
@@ -18,16 +20,20 @@ import com.trycath.myupdateapklibrary.util.StringUtils;
 public class ProgressBarActivity extends AppCompatActivity {
     private ProgressBar downloaddialog_progress;
     private TextView downloaddialog_count;
+    private TextView tv_title;
     private ImageView downloaddialog_close;
     public static final String TAG = ProgressBarActivity.class.getSimpleName();
     public static final String MESSAGE_PROGRESS = "MESSAGE_PROGRESS";
     public static final String MESSAGE_COLOSE = "MESSAGE_COLOSE";
     private RxBus rxBus = RxBus.getInstance();
-    
+    private AppInfoModel appInfoModel ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_bar);
+        appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         initView();
         initRxBusProgressDownload();
         
@@ -41,7 +47,7 @@ public class ProgressBarActivity extends AppCompatActivity {
                     DownloadModel download = (DownloadModel) o;
                     downloaddialog_progress.setProgress(download.getProgress());
                     if (download.getProgress() == 100) {
-                        downloaddialog_count.setText("File Download Complete");
+                        downloaddialog_count.setText(getResources().getString(R.string.download_successful));
                     } else {
                         downloaddialog_count.setText(StringUtils.getDataSize(download.getCurrentFileSize())+ "/" + StringUtils.getDataSize(download.getTotalFileSize()));
                     }
@@ -55,6 +61,13 @@ public class ProgressBarActivity extends AppCompatActivity {
         downloaddialog_count = (TextView) findViewById(R.id.downloaddialog_count);
         downloaddialog_close = (ImageView) findViewById(R.id.downloaddialog_close);
         downloaddialog_close.setOnClickListener(onClickListenerDownLoadingClose);
+        tv_title = (TextView) findViewById(R.id.tv_title);
+        if(UpdateKey.DOWNLOAD_NAME!=null&&!"".equals(UpdateKey.DOWNLOAD_NAME)){
+            tv_title.setText(String.format("%s%s",getResources().getString(R.string.is_downloading),UpdateKey.DOWNLOAD_NAME));
+        }else{
+            tv_title.setText(String.format("%s%s",getResources().getString(R.string.is_downloading),appInfoModel.getName()));
+
+        }
     }
     
     View.OnClickListener onClickListenerDownLoadingClose = new View.OnClickListener() {
@@ -72,8 +85,9 @@ public class ProgressBarActivity extends AppCompatActivity {
             rxBus.release();
         }
     }
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context,AppInfoModel appInfoModel) {
         Intent intent = new Intent(context,ProgressBarActivity.class);
+        intent.putExtra(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

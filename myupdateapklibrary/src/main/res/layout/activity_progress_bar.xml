@@ -14,10 +14,12 @@
         android:orientation="vertical"
         android:padding="25dp">
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="正在下载："
+            android:textColor="@color/colorBlue"
             android:textSize="18sp" />
         <ProgressBar
             android:id="@+id/downloaddialog_progress"
@@ -30,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#ff239ff2"
+            android:textColor="@color/colorBlue"
             tools:text="80%" />
         <ImageView
             android:id="@+id/downloaddialog_close"
