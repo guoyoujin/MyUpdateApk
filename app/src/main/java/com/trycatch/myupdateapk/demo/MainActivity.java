@@ -12,8 +12,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        UpdateKey.API_TOKEN = "";
-        UpdateKey.APP_ID = "";
+        UpdateKey.API_TOKEN = "160105e0223dec1896a6648b8265cc95";
+        UpdateKey.APP_ID = "57d75987ca87a87c89000b91";
         UpdateApk.init(this);
     }
 }
