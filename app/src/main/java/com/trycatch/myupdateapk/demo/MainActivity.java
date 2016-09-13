@@ -16,4 +16,10 @@ public class MainActivity extends AppCompatActivity {
         UpdateKey.APP_ID = "57d75987ca87a87c89000b91";
         UpdateApk.init(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UpdateApk.destory();
+    }
 }

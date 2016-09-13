@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trycath.myupdateapklibrary.R;
+import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.service.DownloadService;
 
 
@@ -30,8 +31,8 @@ public class PromptDialogActivity extends AppCompatActivity{
     private CheckBox chBox;
     private static  String TAG = PromptDialogActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 111;
-    public static final String INTENT_DOWNLOAD_URL= "INTENT_DOWNLOAD_URL";
-    private String url ;
+    public static final String INTENT_DOWNLOAD_MODEL= "INTENT_DOWNLOAD_MODEL";
+    private AppInfoModel appInfoModel ;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -40,7 +41,7 @@ public class PromptDialogActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prompt_dialog);
-        url = getIntent().getExtras().getString(PromptDialogActivity.INTENT_DOWNLOAD_URL);
+        appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         initView();
     }
     
@@ -98,13 +99,13 @@ public class PromptDialogActivity extends AppCompatActivity{
         }
     }
 
-    public static void startActivity(Context context,String downloadUrl) {
+    public static void startActivity(Context context,AppInfoModel appInfoModel) {
         Intent intent = new Intent(context,PromptDialogActivity.class);
-        intent.putExtra(INTENT_DOWNLOAD_URL,downloadUrl);
+        intent.putExtra(INTENT_DOWNLOAD_MODEL,appInfoModel);
         context.startActivity(intent);
     }
     public void startService(){
-        DownloadService.startDownloadService(PromptDialogActivity.this,url);
+        DownloadService.startDownloadService(PromptDialogActivity.this,appInfoModel);
         finish();
     }
 }

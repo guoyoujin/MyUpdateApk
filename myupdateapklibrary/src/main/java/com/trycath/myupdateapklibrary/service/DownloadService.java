@@ -6,18 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.trycath.myupdateapklibrary.util.GetAppInfo;
 import com.trycath.myupdateapklibrary.dialogactivity.ProgressBarActivity;
 import com.trycath.myupdateapklibrary.dialogactivity.PromptDialogActivity;
 import com.trycath.myupdateapklibrary.exception.CustomizeException;
 import com.trycath.myupdateapklibrary.httprequest.DownloadServiceApi;
 import com.trycath.myupdateapklibrary.listener.ProgressResponseListener;
 import com.trycath.myupdateapklibrary.listener.ServiceGenerator;
+import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.model.DownloadModel;
+import com.trycath.myupdateapklibrary.rxbus.RxBus;
+import com.trycath.myupdateapklibrary.rxbus.RxBusResult;
 import com.trycath.myupdateapklibrary.util.FileUtils;
+import com.trycath.myupdateapklibrary.util.GetAppInfo;
 import com.trycath.myupdateapklibrary.util.StringUtils;
 
 import java.io.File;
@@ -37,7 +39,8 @@ public class DownloadService extends IntentService implements ProgressResponseLi
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private Subscription subscription;
-    private String apkUrl = "";
+    private RxBus rxBus = RxBus.getInstance();
+    private AppInfoModel appInfoModel;
     public DownloadService() {
         super("DownloadService");
     }
@@ -45,7 +48,7 @@ public class DownloadService extends IntentService implements ProgressResponseLi
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG,"onHandleIntent");
-        apkUrl = intent.getExtras().getString(PromptDialogActivity.INTENT_DOWNLOAD_URL);
+        appInfoModel = (AppInfoModel) intent.getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("Download")
@@ -61,7 +64,7 @@ public class DownloadService extends IntentService implements ProgressResponseLi
         Log.d(TAG,"download");
         final File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "file.apk");
         DownloadServiceApi downloadService = ServiceGenerator.createResponseService(DownloadServiceApi.class, this);
-        subscription = downloadService.download(apkUrl)
+        subscription = downloadService.download(appInfoModel.getInstallUrl())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .map(new Func1<ResponseBody, InputStream>() {
@@ -86,12 +89,13 @@ public class DownloadService extends IntentService implements ProgressResponseLi
             .subscribe(new Subscriber<InputStream>() {
                 @Override
                 public void onCompleted() {
-                    
+                    downloadCompleted();
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
+                    downloadCompleted();
+                    Log.d(TAG,e.toString());
                 }
 
                 @Override
@@ -119,9 +123,21 @@ public class DownloadService extends IntentService implements ProgressResponseLi
     }
 
     private void sendIntent(DownloadModel download) {
-        Intent intent = new Intent(ProgressBarActivity.MESSAGE_PROGRESS);
-        intent.putExtra("download", download);
-        LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
+        rxBus.post(ProgressBarActivity.MESSAGE_PROGRESS,download);
+    }
+    
+    private void coloseDownload(){
+        rxBus.toObserverableOnMainThread(ProgressBarActivity.MESSAGE_COLOSE, new RxBusResult() {
+            @Override
+            public void onRxBusResult(Object o) {
+                if(o instanceof String){
+                    String msg = (String) o;
+                    if(ProgressBarActivity.MESSAGE_COLOSE.equals(msg)){
+                        DownloadService.this.onDestroy();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -131,22 +147,32 @@ public class DownloadService extends IntentService implements ProgressResponseLi
         if(subscription!=null && !subscription.isUnsubscribed()){
             subscription.unsubscribe();
         }
+        if(rxBus!=null){
+            rxBus.release();
+        }
     }
     
-    public static void startDownloadService(Context context,String url){
+    public static void startDownloadService(Context context,AppInfoModel appInfoModel){
         Log.d(TAG,"startDownloadService");
         Intent intent = new Intent(context, DownloadService.class);
-        intent.putExtra(PromptDialogActivity.INTENT_DOWNLOAD_URL,url);
+        intent.putExtra(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
         context.startService(intent);
     }
 
     @Override
     public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
+        Log.d(TAG,"onResponseProgress");
         DownloadModel download = new DownloadModel();
         download.setTotalFileSize(contentLength);
         download.setCurrentFileSize(bytesRead);
         int progress = (int) ((bytesRead * 100) / contentLength);
         download.setProgress(progress);
         sendNotification(download);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG,"onDestroy");
+        super.onDestroy();
     }
 }
