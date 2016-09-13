@@ -4,10 +4,10 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.trycath.myupdateapklibrary.R;
 import com.trycath.myupdateapklibrary.dialogactivity.ProgressBarActivity;
 import com.trycath.myupdateapklibrary.dialogactivity.PromptDialogActivity;
 import com.trycath.myupdateapklibrary.exception.CustomizeException;
@@ -22,7 +22,6 @@ import com.trycath.myupdateapklibrary.util.FileUtils;
 import com.trycath.myupdateapklibrary.util.GetAppInfo;
 import com.trycath.myupdateapklibrary.util.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -51,9 +50,9 @@ public class DownloadService extends IntentService implements ProgressResponseLi
         appInfoModel = (AppInfoModel) intent.getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle("Download")
+                .setContentTitle(getResources().getString(R.string.file_downloading))
                 .setSmallIcon(GetAppInfo.getAppIconId(this))
-                .setContentText("Downloading File")
+                .setContentText(getResources().getString(R.string.file_downloading))
                 .setAutoCancel(true);
         notificationManager.notify(0, notificationBuilder.build());
         download();
@@ -62,7 +61,6 @@ public class DownloadService extends IntentService implements ProgressResponseLi
 
     private void download() {
         Log.d(TAG,"download");
-        final File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "file.apk");
         DownloadServiceApi downloadService = ServiceGenerator.createResponseService(DownloadServiceApi.class, this);
         subscription = downloadService.download(appInfoModel.getInstallUrl())
             .subscribeOn(Schedulers.io())
@@ -78,7 +76,7 @@ public class DownloadService extends IntentService implements ProgressResponseLi
                 @Override
                 public void call(InputStream inputStream) {
                     try {
-                        FileUtils.writeFile(inputStream, outputFile);
+                        FileUtils.writeFile(inputStream, FileUtils.getFile(appInfoModel));
                     } catch (IOException e) {
                         e.printStackTrace();
                         throw new CustomizeException(e.getMessage(), e);
@@ -111,7 +109,7 @@ public class DownloadService extends IntentService implements ProgressResponseLi
         sendIntent(download);
         notificationManager.cancel(0);
         notificationBuilder.setProgress(0, 0, false);
-        notificationBuilder.setContentText("File Downloaded");
+        notificationBuilder.setContentText(getResources().getString(R.string.file_downloaded));
         notificationManager.notify(0, notificationBuilder.build());
     }
 
@@ -161,13 +159,16 @@ public class DownloadService extends IntentService implements ProgressResponseLi
 
     @Override
     public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
-        Log.d(TAG,"onResponseProgress");
+        Log.d(TAG,"onResponseProgress======done====>>"+done);
         DownloadModel download = new DownloadModel();
         download.setTotalFileSize(contentLength);
         download.setCurrentFileSize(bytesRead);
         int progress = (int) ((bytesRead * 100) / contentLength);
         download.setProgress(progress);
         sendNotification(download);
+        if(done){
+            
+        }
     }
 
     @Override

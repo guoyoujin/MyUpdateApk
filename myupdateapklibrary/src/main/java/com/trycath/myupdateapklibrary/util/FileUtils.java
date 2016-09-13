@@ -1,5 +1,10 @@
 package com.trycath.myupdateapklibrary.util;
 
+import android.os.Environment;
+
+import com.trycath.myupdateapklibrary.UpdateKey;
+import com.trycath.myupdateapklibrary.model.AppInfoModel;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,5 +66,23 @@ public class FileUtils {
         out.close();
         in.close();
 
+    }
+    
+    
+    public static long getFileSize(File file){
+        if(file.exists() && file.isFile()){
+            return file.length();
+        }
+        return 0;
+    }
+    
+    public static File getFile(AppInfoModel appInfoModel){
+        String fileName= "";
+        if(UpdateKey.DOWNLOAD_APK_NAME!=null && !"".equals(UpdateKey.DOWNLOAD_APK_NAME)){
+            fileName = String.format("%s%s.apk",UpdateKey.DOWNLOAD_APK_NAME,appInfoModel.getVersionShort());
+        }else{
+            fileName = String.format("%s%s.apk",appInfoModel.getName(),appInfoModel.getVersionShort());
+        }
+       return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
     }
 }

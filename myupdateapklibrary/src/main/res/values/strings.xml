@@ -9,4 +9,8 @@
     <string name="most_version">最新版本</string>
     <string name="new_version_size">新版本大小</string>
     <string name="update_content">更新内容</string>
+    <string name="download">下载</string>
+    <string name="file_downloading">正在下载文件</string>
+    <string name="file_downloaded">文件下载成功</string>
+    <string name="most_version_downloaded">最新版本已下载，是否安装？</string>
 </resources>

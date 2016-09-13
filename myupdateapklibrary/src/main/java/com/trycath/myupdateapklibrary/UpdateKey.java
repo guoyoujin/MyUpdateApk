@@ -15,6 +15,7 @@ public class UpdateKey {
     public static String APP_ID = "";
     public static String BASE_URL="http://api.fir.im";
     public static String DOWNLOAD_NAME="";
+    public static String DOWNLOAD_APK_NAME="";
     public final static int WITH_DIALOG  = 1;
     public final static int WITH_NOTIFITION = 2;
     public static int DialogOrNotification = WITH_NOTIFITION;

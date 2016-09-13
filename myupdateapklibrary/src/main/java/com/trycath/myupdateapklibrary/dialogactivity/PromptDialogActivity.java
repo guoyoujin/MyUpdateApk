@@ -19,7 +19,11 @@ import android.widget.Toast;
 import com.trycath.myupdateapklibrary.R;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.service.DownloadService;
+import com.trycath.myupdateapklibrary.util.FileUtils;
+import com.trycath.myupdateapklibrary.util.InstallApk;
 import com.trycath.myupdateapklibrary.util.StringUtils;
+
+import java.io.File;
 
 
 public class PromptDialogActivity extends AppCompatActivity{
@@ -70,8 +74,12 @@ public class PromptDialogActivity extends AppCompatActivity{
     private void initContent(){
         tvVersion.setText(String.format("%s：%s",getResources().getString(R.string.most_version),appInfoModel.getVersionShort()));
         double size = (double)appInfoModel.getBinary().getFsize();
-        tvSize.setText(String.format("%s：%s",getResources().getString(R.string.new_version_size), StringUtils.getDataSize(appInfoModel.getBinary().getFsize())));
         tvContent.setText(String.format("%s\n%s",getResources().getString(R.string.update_content),appInfoModel.getChangelog()));
+        if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
+            tvSize.setText(getResources().getString(R.string.most_version_downloaded));
+        }else{
+            tvSize.setText(String.format("%s：%s",getResources().getString(R.string.new_version_size), StringUtils.getDataSize(appInfoModel.getBinary().getFsize())));
+        }
     }
    
     View.OnClickListener nowUpdateListener = new View.OnClickListener() {
@@ -82,7 +90,12 @@ public class PromptDialogActivity extends AppCompatActivity{
             if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(PromptDialogActivity.this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             }else{
-                startService();
+                if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
+                    tvSize.setText(getResources().getString(R.string.most_version_downloaded));
+                    InstallApk.startInstall(PromptDialogActivity.this,FileUtils.getFile(appInfoModel));
+                }else{
+                    startService();
+                }
             }
         }
     };
@@ -114,6 +127,13 @@ public class PromptDialogActivity extends AppCompatActivity{
         Intent intent = new Intent(context,PromptDialogActivity.class);
         intent.putExtra(INTENT_DOWNLOAD_MODEL,appInfoModel);
         context.startActivity(intent);
+    }
+    
+    public boolean isFileExist(File file){
+        if(file.exists() && FileUtils.getFileSize(file)==appInfoModel.getBinary().getFsize()){
+            return true;
+        }
+        return false;
     }
     
     public void startService(){
