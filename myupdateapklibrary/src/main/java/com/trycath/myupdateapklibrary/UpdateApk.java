@@ -8,6 +8,7 @@ import com.trycath.myupdateapklibrary.httprequest.DownloadServiceApi;
 import com.trycath.myupdateapklibrary.listener.ServiceGenerator;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.util.GetAppInfo;
+import com.trycath.myupdateapklibrary.util.IntenetUtil;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -45,25 +46,54 @@ public class UpdateApk {
     
     private UpdateApk(final Context context) {
         Log.d(TAG, "GETAPPINFO");
+        if(UpdateKey.DOWNLOAD_WIFI){
+            switch (IntenetUtil.getNetworkState(mContext)){
+                case IntenetUtil.NETWORN_NONE:
+                    Log.d(TAG,"IntenetUtil.NETWORN_NONE");
+                    break;
+                case IntenetUtil.NETWORN_2G:
+                    Log.d(TAG,"IntenetUtil.NETWORN_2G");
+                    break;
+                case IntenetUtil.NETWORN_3G:
+                    Log.d(TAG,"IntenetUtil.NETWORN_3G");
+                    break;
+                case IntenetUtil.NETWORN_4G:
+                    Log.d(TAG,"IntenetUtil.NETWORN_4G");
+                    break;
+                case IntenetUtil.NETWORN_MOBILE:
+                    Log.d(TAG,"IntenetUtil.NETWORN_MOBILE");
+                    break;
+                case IntenetUtil.NETWORN_WIFI:
+                    Log.d(TAG,"IntenetUtil.NETWORN_WIFI");
+                    getAPpinfo();
+                    break;
+                default:
+            }
+        }else{
+            getAPpinfo();
+        }
+    }
+    
+    public void getAPpinfo(){
         DownloadServiceApi downloadService = ServiceGenerator.createService(DownloadServiceApi.class);
         subscription = downloadService.getUpdateApkInfo(UpdateKey.APP_ID,UpdateKey.API_TOKEN)
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .subscribe(new Subscriber<AppInfoModel>() {
-            @Override
-            public void onCompleted() {
-                
-            }
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, e.toString());
-            }
-            @Override
-            public void onNext(AppInfoModel appInfoModel) {
-                Log.d(TAG, appInfoModel.toString());
-                valAppInfo(appInfoModel);
-            }
-        });
+                @Override
+                public void onCompleted() {
+
+                }
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, e.toString());
+                }
+                @Override
+                public void onNext(AppInfoModel appInfoModel) {
+                    Log.d(TAG, appInfoModel.toString());
+                    valAppInfo(appInfoModel);
+                }
+            });
     }
     
     public void valAppInfo(AppInfoModel appInfoModel){

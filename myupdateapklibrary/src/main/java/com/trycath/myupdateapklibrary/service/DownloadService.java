@@ -20,6 +20,7 @@ import com.trycath.myupdateapklibrary.rxbus.RxBus;
 import com.trycath.myupdateapklibrary.rxbus.RxBusResult;
 import com.trycath.myupdateapklibrary.util.FileUtils;
 import com.trycath.myupdateapklibrary.util.GetAppInfo;
+import com.trycath.myupdateapklibrary.util.InstallApk;
 import com.trycath.myupdateapklibrary.util.StringUtils;
 
 import java.io.IOException;
@@ -167,7 +168,11 @@ public class DownloadService extends IntentService implements ProgressResponseLi
         download.setProgress(progress);
         sendNotification(download);
         if(done){
-            
+            if(notificationManager!=null ){
+                notificationManager.cancel(0);
+            }
+            Log.d(TAG,"install apk............");
+            InstallApk.startInstall(this,FileUtils.getFile(appInfoModel));
         }
     }
 

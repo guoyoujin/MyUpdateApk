@@ -48,6 +48,7 @@ public class ProgressBarActivity extends AppCompatActivity {
                     downloaddialog_progress.setProgress(download.getProgress());
                     if (download.getProgress() == 100) {
                         downloaddialog_count.setText(getResources().getString(R.string.download_successful));
+                        finish();
                     } else {
                         downloaddialog_count.setText(StringUtils.getDataSize(download.getCurrentFileSize())+ "/" + StringUtils.getDataSize(download.getTotalFileSize()));
                     }

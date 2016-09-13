@@ -103,7 +103,7 @@ public class PromptDialogActivity extends AppCompatActivity{
     View.OnClickListener afterUpdateListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            finish();
         }
     };
 
