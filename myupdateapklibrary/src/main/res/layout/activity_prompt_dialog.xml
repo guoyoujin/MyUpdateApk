@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="280dp"
+    android:minHeight="300dp"
     android:orientation="vertical"
     android:background="@drawable/material_card"
     tools:context=".dialogactivity.PromptDialogActivity">
@@ -15,65 +17,76 @@
         android:text="发现新版本"
         android:gravity="center_horizontal|center_vertical"
         android:textSize="@dimen/size_20"
-        android:textColor="@android:color/holo_blue_dark"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:textColor="@color/colorPrimary"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@android:color/holo_blue_dark">
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:background="@color/colorPrimary">
     </LinearLayout>
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
         android:text="最新版本："
+        android:textColor="@android:color/black"
         android:textSize="@dimen/size_16"/>
     <TextView
         android:id="@+id/tvSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="12dp"
         android:text="新版本大小："
+        android:textColor="@android:color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
         android:textSize="@dimen/size_16"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
-        android:text="更新内容"
-        android:textSize="@dimen/size_16"/>
-
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:layout_marginRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
         android:text="更新内容lkasnldansdlansdlaknsdlkasndlkandlkansdlkansdlkandlknaldknalkdnasdklandlkanldknalknalkdnlkand"
         android:textSize="@dimen/size_16"/>
     <CheckBox
         android:id="@+id/chBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/size_16"
         android:text="忽略该版本"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginBottom="15dp"
-        android:layout_height="match_parent">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/btnNowUpdate"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="立即更新"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/background_button"
+            android:layout_height="40dp"/>
         <Button
             android:id="@+id/btnAfterUpdate"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="以后再说"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold"
+            android:background="@drawable/background_button_cancel"
+            android:layout_height="40dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -43,6 +43,7 @@ public class PromptDialogActivity extends AppCompatActivity{
         setContentView(R.layout.activity_prompt_dialog);
         appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         initView();
+        initContent();
     }
     
     private void initView(){
@@ -61,6 +62,13 @@ public class PromptDialogActivity extends AppCompatActivity{
                 
             }
         });
+        
+    }
+    private void initContent(){
+        tvVersion.setText(String.format("最新版本：%s",appInfoModel.getVersionShort()));
+        double size = (double)appInfoModel.getBinary().getFsize();
+        tvSize.setText(String.format("新版本大小：%s",String.format("%.2f",size/1024000)));
+        tvContent.setText(String.format("更新内容\n%s",appInfoModel.getChangelog()));
     }
    
     View.OnClickListener nowUpdateListener = new View.OnClickListener() {
