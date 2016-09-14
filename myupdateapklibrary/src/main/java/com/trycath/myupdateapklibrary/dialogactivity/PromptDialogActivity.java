@@ -100,11 +100,11 @@ public class PromptDialogActivity extends AppCompatActivity{
                 if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
                     tvSize.setText(getResources().getString(R.string.most_version_downloaded));
                     InstallApk.startInstall(PromptDialogActivity.this,FileUtils.getFile(appInfoModel));
+                    finish();
                 }else{
                     startService();
                 }
             }
-            finish();
         }
     };
     
@@ -140,15 +140,9 @@ public class PromptDialogActivity extends AppCompatActivity{
         }
     }
     
-    public boolean isFileExist(File file){
-        if(file.exists() && FileUtils.getFileSize(file)==appInfoModel.getBinary().getFsize()){
-            return true;
-        }
-        return false;
-    }
-    
     public void startService(){
         DownloadFileService.startDownloadFileService(PromptDialogActivity.this,appInfoModel);
+        finish();
     }
 
     @Override
