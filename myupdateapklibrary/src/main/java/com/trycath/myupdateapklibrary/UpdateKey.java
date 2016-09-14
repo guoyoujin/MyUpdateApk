@@ -17,7 +17,7 @@ public class UpdateKey {
     public static String DOWNLOAD_NAME="";
     public static String DOWNLOAD_APK_NAME="";
     public static boolean DOWNLOAD_WIFI = false;
-    public final static int WITH_DIALOG  = 1;
-    public final static int WITH_NOTIFITION = 2;
-    public static int DialogOrNotification = WITH_NOTIFITION;
+    public final static boolean WITH_DIALOG  = false;
+    public final static boolean WITH_NOTIFITION = false;
+    public static boolean DialogOrNotification = WITH_NOTIFITION;
 }

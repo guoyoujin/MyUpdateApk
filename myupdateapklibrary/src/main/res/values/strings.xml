@@ -13,5 +13,7 @@
     <string name="file_downloading">正在下载文件</string>
     <string name="file_downloaded">文件下载成功</string>
     <string name="start_downloaded">开始下载</string>
+    <string name="downloaded_field">下载失败</string>
+
     <string name="most_version_downloaded">最新版本已下载，是否安装？</string>
 </resources>

@@ -15,14 +15,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.trycath.myupdateapklibrary.R;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
-import com.trycath.myupdateapklibrary.service.DownloadService;
+import com.trycath.myupdateapklibrary.service.DownloadFileService;
 import com.trycath.myupdateapklibrary.util.FileUtils;
 import com.trycath.myupdateapklibrary.util.InstallApk;
 import com.trycath.myupdateapklibrary.util.StringUtils;
-
 import java.io.File;
 
 
@@ -97,6 +95,7 @@ public class PromptDialogActivity extends AppCompatActivity{
                     startService();
                 }
             }
+            finish();
         }
     };
     
@@ -137,7 +136,6 @@ public class PromptDialogActivity extends AppCompatActivity{
     }
     
     public void startService(){
-        DownloadService.startDownloadService(PromptDialogActivity.this,appInfoModel);
-        finish();
+        DownloadFileService.startDownloadFileService(PromptDialogActivity.this,appInfoModel);
     }
 }

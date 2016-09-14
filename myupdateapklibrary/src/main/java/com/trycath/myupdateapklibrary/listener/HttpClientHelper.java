@@ -1,10 +1,12 @@
 package com.trycath.myupdateapklibrary.listener;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * 在此写用途
@@ -23,6 +25,11 @@ public class HttpClientHelper {
      */
     public static OkHttpClient addProgressResponseListener(final ProgressResponseListener progressListener){
         OkHttpClient.Builder client = new OkHttpClient.Builder();
+        client.connectTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS);
         //增加拦截器
         client.addInterceptor(new Interceptor() {
             @Override
@@ -36,5 +43,17 @@ public class HttpClientHelper {
             }
         });
         return client.build();
+    }
+    public static OkHttpClient getOkhttp(){
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return new OkHttpClient.Builder()
+                .connectTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .addInterceptor(interceptor)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
     }
 }

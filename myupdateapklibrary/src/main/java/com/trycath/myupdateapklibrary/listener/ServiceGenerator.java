@@ -25,7 +25,9 @@ public class ServiceGenerator {
             .addConverterFactory(GsonConverterFactory.create());
 
     public static <T> T createService(Class<T> tClass){
-        return builder.build()
+        return builder
+                .client(HttpClientHelper.getOkhttp())
+                .build()
                 .create(tClass);
     }
 

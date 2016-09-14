@@ -34,6 +34,7 @@ public class ProgressBarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_bar);
+        Log.d(TAG,"onCreate");
         appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
         initView();
         initRxBusProgressDownload();
@@ -41,6 +42,7 @@ public class ProgressBarActivity extends AppCompatActivity {
     }
     
     private void initRxBusProgressDownload(){
+        Log.d(TAG,"initRxBusProgressDownload");
         rxBus.toObserverableOnMainThread(ProgressBarActivity.MESSAGE_PROGRESS, new RxBusResult() {
             @Override
             public void onRxBusResult(Object o) {
@@ -59,6 +61,7 @@ public class ProgressBarActivity extends AppCompatActivity {
     }
 
     private void initView(){
+        Log.d(TAG,"initView");
         downloaddialog_progress = (ProgressBar) findViewById(R.id.downloaddialog_progress);
         downloaddialog_count = (TextView) findViewById(R.id.downloaddialog_count);
         downloaddialog_close = (ImageView) findViewById(R.id.downloaddialog_close);
@@ -84,11 +87,13 @@ public class ProgressBarActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG,"onDestroy");
         if(rxBus!=null){
             rxBus.release();
         }
     }
     public static void startActivity(Context context,AppInfoModel appInfoModel) {
+        Log.d(TAG,"startActivity");
         Intent intent = new Intent(context,ProgressBarActivity.class);
         intent.putExtra(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
