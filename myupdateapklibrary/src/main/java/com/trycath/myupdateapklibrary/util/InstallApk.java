@@ -3,6 +3,7 @@ package com.trycath.myupdateapklibrary.util;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 
@@ -19,13 +20,14 @@ public class InstallApk {
     private static final String TAG = "InstallApk";
     public static void startInstall(Context context, File apkfile) {
         if (!apkfile.exists()) {
+            Log.d(TAG,"startInstallexists");
             return;
         }
+        Log.d(TAG,"startInstall");
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
-                "application/vnd.android.package-archive");
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
         context.startActivity(i);
-
     }
     public static void startInstall(Context context, String filePath) {
         File apkfile = new File(filePath);

@@ -1,6 +1,7 @@
 package com.trycath.myupdateapklibrary.util;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.trycath.myupdateapklibrary.UpdateKey;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
@@ -50,6 +51,7 @@ public class FileUtils {
      * @param file
      */
     public static void writeFile(InputStream in, File file) throws IOException {
+        Log.d(TAG,"write file=====start==");
         if (!file.getParentFile().exists())
             file.getParentFile().mkdirs();
 
@@ -62,6 +64,7 @@ public class FileUtils {
         while ((len = in.read(buffer)) != -1) {
             out.write(buffer, 0, len);
         }
+        Log.d(TAG,"write file====success===");
         out.flush();
         out.close();
         in.close();

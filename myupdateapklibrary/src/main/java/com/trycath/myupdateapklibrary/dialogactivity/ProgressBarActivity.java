@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -74,6 +75,7 @@ public class ProgressBarActivity extends AppCompatActivity {
     View.OnClickListener onClickListenerDownLoadingClose = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Log.d(TAG,"onClickListenerDownLoadingClose");
             rxBus.post(ProgressBarActivity.MESSAGE_COLOSE,ProgressBarActivity.MESSAGE_COLOSE);
             finish();
         }
