@@ -15,12 +15,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.trycath.myupdateapklibrary.R;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.service.DownloadFileService;
 import com.trycath.myupdateapklibrary.util.FileUtils;
 import com.trycath.myupdateapklibrary.util.InstallApk;
+import com.trycath.myupdateapklibrary.util.PreferenceUtils;
 import com.trycath.myupdateapklibrary.util.StringUtils;
+
 import java.io.File;
 
 
@@ -45,9 +48,13 @@ public class PromptDialogActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prompt_dialog);
-        appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
-        initView();
-        initContent();
+        if(getIntent()!=null&&getIntent().getExtras()!=null&&getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL)!=null){
+            appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
+            initView();
+            initContent();
+        }else{
+            finish();
+        }
     }
     
     private void initView(){
@@ -63,7 +70,9 @@ public class PromptDialogActivity extends AppCompatActivity{
         chBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                
+                if(isChecked){
+                    PreferenceUtils.setPrefBoolean(PromptDialogActivity.this,appInfoModel.getVersion(),isChecked);
+                }
             }
         });
         
@@ -123,9 +132,12 @@ public class PromptDialogActivity extends AppCompatActivity{
     }
 
     public static void startActivity(Context context,AppInfoModel appInfoModel) {
-        Intent intent = new Intent(context,PromptDialogActivity.class);
-        intent.putExtra(INTENT_DOWNLOAD_MODEL,appInfoModel);
-        context.startActivity(intent);
+        if(appInfoModel!=null){
+            Intent intent = new Intent(context,PromptDialogActivity.class);
+            intent.putExtra(INTENT_DOWNLOAD_MODEL,appInfoModel);
+            context.startActivity(intent);
+
+        }
     }
     
     public boolean isFileExist(File file){
@@ -138,4 +150,22 @@ public class PromptDialogActivity extends AppCompatActivity{
     public void startService(){
         DownloadFileService.startDownloadFileService(PromptDialogActivity.this,appInfoModel);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        appInfoModel = (AppInfoModel) savedInstanceState.getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
+    }
+
 }

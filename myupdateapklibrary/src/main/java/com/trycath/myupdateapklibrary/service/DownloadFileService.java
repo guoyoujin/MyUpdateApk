@@ -67,19 +67,21 @@ public class DownloadFileService extends Service implements ProgressResponseList
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG,"onStartCommand()");
-        appInfoModel = (AppInfoModel) intent.getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
-        if(UpdateKey.WITH_NOTIFITION){
-            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationBuilder = new NotificationCompat.Builder(this)
-                    .setContentTitle(getResources().getString(R.string.file_downloading))
-                    .setSmallIcon(GetAppInfo.getAppIconId(this))
-                    .setContentText(getResources().getString(R.string.file_downloading))
-                    .setTicker(getResources().getString(R.string.start_downloaded))
-                    .setAutoCancel(true);
-            notificationManager.notify(0, notificationBuilder.build());
+        if(intent!=null && intent.getExtras()!=null && intent.getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL)!=null){
+            appInfoModel = (AppInfoModel) intent.getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
+            if(UpdateKey.WITH_NOTIFITION){
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationBuilder = new NotificationCompat.Builder(this)
+                        .setContentTitle(getResources().getString(R.string.file_downloading))
+                        .setSmallIcon(GetAppInfo.getAppIconId(this))
+                        .setContentText(getResources().getString(R.string.file_downloading))
+                        .setTicker(getResources().getString(R.string.start_downloaded))
+                        .setAutoCancel(true);
+                notificationManager.notify(0, notificationBuilder.build());
+            }
+            coloseDownload();
+            download();
         }
-        coloseDownload();
-        download();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -214,7 +216,7 @@ public class DownloadFileService extends Service implements ProgressResponseList
         }
         if(rxBus!=null){
             Log.d(TAG,"rxBus.release()");
-            rxBus.release();
+            rxBus.removeObserverable(ProgressBarActivity.MESSAGE_PROGRESS);
         }
         if(notificationManager!=null){
             Log.d(TAG,"notificationManager.cancel(0)");

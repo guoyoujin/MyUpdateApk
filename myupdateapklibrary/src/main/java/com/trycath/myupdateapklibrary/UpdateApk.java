@@ -9,6 +9,7 @@ import com.trycath.myupdateapklibrary.listener.ServiceGenerator;
 import com.trycath.myupdateapklibrary.model.AppInfoModel;
 import com.trycath.myupdateapklibrary.util.GetAppInfo;
 import com.trycath.myupdateapklibrary.util.IntenetUtil;
+import com.trycath.myupdateapklibrary.util.PreferenceUtils;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -65,16 +66,16 @@ public class UpdateApk {
                     break;
                 case IntenetUtil.NETWORN_WIFI:
                     Log.d(TAG,"IntenetUtil.NETWORN_WIFI");
-                    getAPpinfo();
+                    getAppinfo();
                     break;
                 default:
             }
         }else{
-            getAPpinfo();
+            getAppinfo();
         }
     }
     
-    public void getAPpinfo(){
+    public void getAppinfo(){
         DownloadServiceApi downloadService = ServiceGenerator.createService(DownloadServiceApi.class);
         subscription = downloadService.getUpdateApkInfo(UpdateKey.APP_ID,UpdateKey.API_TOKEN)
             .subscribeOn(Schedulers.io())
@@ -98,19 +99,21 @@ public class UpdateApk {
     
     public void valAppInfo(AppInfoModel appInfoModel){
         if(appInfoModel.getVersion()!=null){
-            switch (GetAppInfo.compareVersionCode(GetAppInfo.getVersionCode(mContext),Integer.parseInt(appInfoModel.getVersion()))){
-                case 0:
-                    Log.d(TAG,"已经是最新版本");
-                    break;
-                case 1:
-                    Log.d(TAG,"已经是最高版本");
-                    break;
-                case -1:
-                    Log.d(TAG,"需要更新");
-                    PromptDialogActivity.startActivity(mContext,appInfoModel);
-                    break;
-                default:
-                    
+            if(!PreferenceUtils.getPrefBoolean(mContext,appInfoModel.getVersion(),false)){
+                switch (GetAppInfo.compareVersionCode(GetAppInfo.getVersionCode(mContext),Integer.parseInt(appInfoModel.getVersion()))){
+                    case 0:
+                        Log.d(TAG,"已经是最新版本");
+                        break;
+                    case 1:
+                        Log.d(TAG,"已经是最高版本");
+                        break;
+                    case -1:
+                        Log.d(TAG,"需要更新");
+                        PromptDialogActivity.startActivity(mContext,appInfoModel);
+                        break;
+                    default:
+
+                }
             }
         }
     }

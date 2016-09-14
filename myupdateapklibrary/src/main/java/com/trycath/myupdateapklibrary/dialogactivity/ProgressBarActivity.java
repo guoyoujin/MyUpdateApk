@@ -35,9 +35,13 @@ public class ProgressBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_bar);
         Log.d(TAG,"onCreate");
-        appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
-        initView();
-        initRxBusProgressDownload();
+        if(getIntent()!=null&&getIntent().getExtras()!=null&&getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL)!=null) {
+            appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
+            initView();
+            initRxBusProgressDownload();
+        }else{
+            finish();
+        }
         
     }
     
@@ -89,7 +93,7 @@ public class ProgressBarActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG,"onDestroy");
         if(rxBus!=null){
-            rxBus.release();
+            rxBus.removeObserverable(ProgressBarActivity.MESSAGE_COLOSE);
         }
     }
     public static void startActivity(Context context,AppInfoModel appInfoModel) {
@@ -98,5 +102,18 @@ public class ProgressBarActivity extends AppCompatActivity {
         intent.putExtra(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG,"onRestoreInstanceState");
+        appInfoModel = (AppInfoModel) savedInstanceState.getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG,"onSaveInstanceState");
+        outState.putSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
     }
 }

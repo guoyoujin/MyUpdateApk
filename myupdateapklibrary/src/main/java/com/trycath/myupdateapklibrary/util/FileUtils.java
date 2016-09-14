@@ -80,6 +80,8 @@ public class FileUtils {
     }
     
     public static File getFile(AppInfoModel appInfoModel){
+        if (appInfoModel==null)
+            return null;
         String fileName= "";
         if(UpdateKey.DOWNLOAD_APK_NAME!=null && !"".equals(UpdateKey.DOWNLOAD_APK_NAME)){
             fileName = String.format("%s%s.apk",UpdateKey.DOWNLOAD_APK_NAME,appInfoModel.getVersionShort());
