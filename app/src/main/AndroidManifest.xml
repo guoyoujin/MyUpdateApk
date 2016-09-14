@@ -18,8 +18,5 @@
             </intent-filter>
         </activity>
         <service android:name="com.trycath.myupdateapklibrary.service.DownloadFileService" />
-        <service android:name="com.trycath.myupdateapklibrary.service.DownloadService" />
-
     </application>
-
 </manifest>

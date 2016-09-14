@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MyUpdateAPkLibrary</string>
+    <string name="btn_confim">Update now</string>
+    <string name="btn_cancel">later</string>
+    <string name="found_version">Found the new version</string>
+    <string name="ignore_version">Ignore this version</string>
+    <string name="is_downloading">Is downloading</string>
+    <string name="download_successful">Download successful</string>
+    <string name="most_version">The latest version</string>
+    <string name="new_version_size">A new version of the size</string>
+    <string name="update_content">Update the content</string>
+    <string name="download">download</string>
+    <string name="file_downloading">Is the download file</string>
+    <string name="file_downloaded">File download successful</string>
+    <string name="start_downloaded">Start the download</string>
+    <string name="downloaded_field">Download failed</string>
+    <string name="most_version_downloaded">The latest version already download, install?</string>
+</resources>

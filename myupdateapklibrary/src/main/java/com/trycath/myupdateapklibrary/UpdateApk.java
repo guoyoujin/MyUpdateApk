@@ -102,13 +102,13 @@ public class UpdateApk {
             if(!PreferenceUtils.getPrefBoolean(mContext,appInfoModel.getVersion(),false)){
                 switch (GetAppInfo.compareVersionCode(GetAppInfo.getVersionCode(mContext),Integer.parseInt(appInfoModel.getVersion()))){
                     case 0:
-                        Log.d(TAG,"已经是最新版本");
+                        Log.d(TAG,"this is best new version");
                         break;
                     case 1:
-                        Log.d(TAG,"已经是最高版本");
+                        Log.d(TAG,"this is highest version");
                         break;
                     case -1:
-                        Log.d(TAG,"需要更新");
+                        Log.d(TAG,"need update new version");
                         PromptDialogActivity.startActivity(mContext,appInfoModel);
                         break;
                     default:
