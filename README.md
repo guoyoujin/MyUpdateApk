@@ -5,16 +5,18 @@
 适用于api 14及以上，且加入了Android6.0的权限判断,由于本人很懒就没开发后台apk管理功能，就直接采用fim的公共api实现版本比对
 
 ## ScreenShot
+![MyUpdateApk](images/updateApp320.gif)
 
 ## Gradle Config
  first add dependences
 ```
   dependencies {
-    compile 'com.trycatch.android:myupdateapklibrary:1.0.0'
+    compile 'com.trycatch.android:myupdateapklibrary:1.1.0'
   }
 ```
 
 ## use
+1.自动更新
 Activity
 
 ```
@@ -37,6 +39,64 @@ public class MainActivity extends AppCompatActivity {
         UpdateApk.destory();
     }
 }
+```
+2.手动更新
+```
+UpdateApk.setAppUpdateListener(new AppUpdateListener() {
+                    @Override
+                    public void onStart() {
+                        if(dialog!=null&&!dialog.isShowing()){
+                            dialog.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG,"onCompleted()===");
+                        if(dialog!=null&&dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG,e.toString());
+                        if(dialog!=null&&dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(AppInfoModel appInfoModel) {
+                        Log.d(TAG,appInfoModel.toString());
+                        if(dialog!=null&&dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(AppInfoModel appInfoModel, int state) {
+                        Log.d(TAG,appInfoModel.toString());
+                        Log.d(TAG,"=state=="+state);
+                        switch (state){
+                            case UpdateState.BEST_NEW_VSERSION:
+                                Toast.makeText(MainActivity.this,"this is best new version",Toast.LENGTH_SHORT).show();
+                                break;
+                            case UpdateState.BEST_HEIGHT_VERSION:
+                                Toast.makeText(MainActivity.this,"this is highest version",Toast.LENGTH_SHORT).show();
+                                break;
+                            case UpdateState.NEED_UPDATE_VERSION:
+                                Toast.makeText(MainActivity.this,"need update new version",Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                
+                        }
+                        if(dialog!=null&&dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                UpdateApk.init(MainActivity.this);
 ```
 
 AndroidManifest.xml

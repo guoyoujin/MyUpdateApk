@@ -84,9 +84,9 @@ public class FileUtils {
             return null;
         String fileName= "";
         if(UpdateKey.DOWNLOAD_APK_NAME!=null && !"".equals(UpdateKey.DOWNLOAD_APK_NAME)){
-            fileName = String.format("%s%s.apk",UpdateKey.DOWNLOAD_APK_NAME,appInfoModel.getVersionShort());
+            fileName = String.format("%s_%s.apk",UpdateKey.DOWNLOAD_APK_NAME,appInfoModel.getVersionShort());
         }else{
-            fileName = String.format("%s%s.apk",appInfoModel.getName(),appInfoModel.getVersionShort());
+            fileName = String.format("%s_%s.apk",appInfoModel.getName(),appInfoModel.getVersionShort());
         }
        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
     }

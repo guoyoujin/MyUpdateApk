@@ -24,8 +24,6 @@ import com.trycath.myupdateapklibrary.util.InstallApk;
 import com.trycath.myupdateapklibrary.util.PreferenceUtils;
 import com.trycath.myupdateapklibrary.util.StringUtils;
 
-import java.io.File;
-
 
 public class PromptDialogActivity extends AppCompatActivity{
     private Button btnNowUpdate;
@@ -97,13 +95,7 @@ public class PromptDialogActivity extends AppCompatActivity{
             if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(PromptDialogActivity.this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             }else{
-                if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
-                    tvSize.setText(getResources().getString(R.string.most_version_downloaded));
-                    InstallApk.startInstall(PromptDialogActivity.this,FileUtils.getFile(appInfoModel));
-                    finish();
-                }else{
-                    startService();
-                }
+                startService();
             }
         }
     };
@@ -141,8 +133,15 @@ public class PromptDialogActivity extends AppCompatActivity{
     }
     
     public void startService(){
-        DownloadFileService.startDownloadFileService(PromptDialogActivity.this,appInfoModel);
-        finish();
+        if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
+            tvSize.setText(getResources().getString(R.string.most_version_downloaded));
+            InstallApk.startInstall(PromptDialogActivity.this,FileUtils.getFile(appInfoModel));
+            finish();
+        }else{
+            DownloadFileService.startDownloadFileService(PromptDialogActivity.this,appInfoModel);
+            finish();        
+        }
+        
     }
 
     @Override
