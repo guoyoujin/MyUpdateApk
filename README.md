@@ -11,7 +11,7 @@
  first add dependences
 ```
   dependencies {
-    compile 'com.trycatch.android:myupdateapklibrary:1.1.0'
+    compile 'com.trycatch.android:myupdateapklibrary:1.1.1'
   }
 ```
 
