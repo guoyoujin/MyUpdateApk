@@ -16,6 +16,11 @@
 ```
 
 ## use
+首先必须保证你的最新版本versionCode和versionName是随版本升级递增的
+```
+ versionCode 1
+ versionName "1.0"
+```
 1.自动更新
 Activity
 
