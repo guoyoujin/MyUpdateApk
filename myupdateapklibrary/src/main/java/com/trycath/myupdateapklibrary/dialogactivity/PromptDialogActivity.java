@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -46,6 +47,7 @@ public class PromptDialogActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prompt_dialog);
+        Log.d(TAG,"==onCreate==");
         if(getIntent()!=null&&getIntent().getExtras()!=null&&getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL)!=null){
             appInfoModel = (AppInfoModel) getIntent().getExtras().getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
             initView();
@@ -151,6 +153,7 @@ public class PromptDialogActivity extends AppCompatActivity{
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG,"==onRestoreInstanceState==");
         super.onRestoreInstanceState(savedInstanceState);
         appInfoModel = (AppInfoModel) savedInstanceState.getSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL);
     }
@@ -158,7 +161,46 @@ public class PromptDialogActivity extends AppCompatActivity{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.d(TAG,"==onSaveInstanceState==");
         outState.putSerializable(PromptDialogActivity.INTENT_DOWNLOAD_MODEL,appInfoModel);
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"==onPause==");
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.0f;
+        lp.dimAmount = 0.0f;
+        getWindow().setAttributes(lp);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"==onStart==");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 1.0f;
+        lp.dimAmount = 0.5f;
+        getWindow().setAttributes(lp);
+        Log.d(TAG,"==onResume==");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG,"==onRestart==");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG,"==onStop==");
+    }
 }
