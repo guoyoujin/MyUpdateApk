@@ -34,6 +34,7 @@ public class UpdateApk {
     private static volatile Subscription subscription;
     private static Context mContext;
     private static AppUpdateListener appUpdateListener = null;
+    private static boolean mManualUpdateFlg = false;
     
     public static UpdateApk init(Context context) {
         UpdateApk inst = sInst;
@@ -55,6 +56,14 @@ public class UpdateApk {
     }
 
     public static void setAppUpdateListener(AppUpdateListener listener) {
+        appUpdateListener = listener;
+    }
+
+    public static void setmManualUpdateFlg(boolean mManualUpdateFlg) {
+        UpdateApk.mManualUpdateFlg = mManualUpdateFlg;
+    }
+    public static void setmManualUpdate(boolean mManualUpdateFlg,AppUpdateListener listener) {
+        UpdateApk.mManualUpdateFlg = mManualUpdateFlg;
         appUpdateListener = listener;
     }
 
@@ -135,7 +144,7 @@ public class UpdateApk {
     
     public void valAppInfo(AppInfoModel appInfoModel){
         if(appInfoModel.getVersion()!=null){
-            if(!PreferenceUtils.getPrefBoolean(mContext,appInfoModel.getVersion(),false)){
+            if(!PreferenceUtils.getPrefBoolean(mContext,appInfoModel.getVersion(),false) || mManualUpdateFlg){
                 switch (GetAppInfo.compareVersionCode(GetAppInfo.getVersionCode(mContext),Integer.parseInt(appInfoModel.getVersion()))){
                     case UpdateState.BEST_NEW_VSERSION:
                         Log.d(TAG,"this is best new version");

@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.updateApp:
                 Log.d(TAG,"switch updateApp");
+                UpdateApk.setmManualUpdateFlg(true);
                 UpdateApk.setAppUpdateListener(new AppUpdateListener() {
                     @Override
                     public void onStart() {
