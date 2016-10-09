@@ -18,13 +18,13 @@
         android:gravity="center_horizontal|center_vertical"
         android:textSize="@dimen/size_20"
         android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_Blue"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
-        android:background="@color/colorBlue">
+        android:background="@color/color_Blue">
     </LinearLayout>
     <TextView
         android:id="@+id/tvVersion"
