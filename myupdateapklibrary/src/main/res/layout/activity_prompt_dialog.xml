@@ -53,6 +53,8 @@
         android:layout_marginTop="16dp"
         android:textColor="@android:color/black"
         android:layout_marginRight="8dp"
+        android:scrollbars="vertical"
+        android:maxLines="10"
         android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
         android:text="@string/update_content"
         android:textSize="@dimen/size_16"/>
@@ -66,7 +68,7 @@
         android:text="@string/ignore_version"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"

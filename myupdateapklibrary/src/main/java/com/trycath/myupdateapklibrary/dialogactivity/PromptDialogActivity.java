@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -82,6 +83,7 @@ public class PromptDialogActivity extends AppCompatActivity{
         tvVersion.setText(String.format("%s：%s",getResources().getString(R.string.most_version),appInfoModel.getVersionShort()));
         double size = (double)appInfoModel.getBinary().getFsize();
         tvContent.setText(String.format("%s\n%s",getResources().getString(R.string.update_content),appInfoModel.getChangelog()));
+        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
         if(FileUtils.getFile(appInfoModel).exists() && FileUtils.getFileSize(FileUtils.getFile(appInfoModel))==appInfoModel.getBinary().getFsize()){
             tvSize.setText(getResources().getString(R.string.most_version_downloaded));
         }else{
