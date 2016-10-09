@@ -7,7 +7,7 @@
     android:minWidth="280dp"
     android:minHeight="300dp"
     android:orientation="vertical"
-    android:background="@drawable/material_card"
+    android:background="@drawable/update_material_card"
     tools:context=".dialogactivity.PromptDialogActivity">
     <TextView
         android:id="@+id/tvTitle"
@@ -79,7 +79,7 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:layout_marginRight="10dp"
-            android:background="@drawable/background_button"
+            android:background="@drawable/update_background_button"
             android:layout_height="40dp"/>
         <Button
             android:id="@+id/btnAfterUpdate"
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:text="@string/btn_cancel"
             android:textStyle="bold"
-            android:background="@drawable/background_button_cancel"
+            android:background="@drawable/update_background_button_cancel"
             android:layout_height="40dp"/>
     </LinearLayout>
 </LinearLayout>

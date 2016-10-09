@@ -9,7 +9,7 @@
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/material_card"
+        android:background="@drawable/update_material_card"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="25dp">
@@ -26,7 +26,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:progressDrawable="@drawable/bg_progress" />
+            android:progressDrawable="@drawable/update_bg_progress" />
         <TextView
             android:id="@+id/downloaddialog_count"
             android:layout_width="wrap_content"
@@ -39,6 +39,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_close_white_24dp" />
+            android:background="@drawable/update_ic_close_white_24dp" />
     </LinearLayout>
 </RelativeLayout>
