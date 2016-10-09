@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyUpdateAPkLibrary</string>
+    <string name="update_app_name">MyUpdateAPkLibrary</string>
     <string name="btn_confim">Update now</string>
     <string name="btn_cancel">later</string>
     <string name="found_version">Found the new version</string>
