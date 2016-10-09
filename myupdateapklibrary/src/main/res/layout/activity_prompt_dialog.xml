@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="280dp"
-    android:minHeight="300dp"
+    android:minHeight="280dp"
     android:orientation="vertical"
     android:background="@drawable/update_material_card"
     tools:context=".dialogactivity.PromptDialogActivity">
