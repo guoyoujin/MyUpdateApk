@@ -121,6 +121,7 @@ public class UpdateApk {
                     if(appUpdateListener!=null){
                         appUpdateListener.onCompleted();
                     }
+                    mManualUpdateFlg = false;
 
                 }
                 @Override
@@ -129,6 +130,7 @@ public class UpdateApk {
                     if(appUpdateListener!=null){
                         appUpdateListener.onError(e);
                     }
+                    mManualUpdateFlg = false;
                 }
                 @Override
                 public void onNext(AppInfoModel appInfoModel) {
@@ -137,6 +139,7 @@ public class UpdateApk {
                         appUpdateListener.onNext(appInfoModel);
                     }
                     valAppInfo(appInfoModel);
+                    mManualUpdateFlg = false;
                     
                 }
             });
