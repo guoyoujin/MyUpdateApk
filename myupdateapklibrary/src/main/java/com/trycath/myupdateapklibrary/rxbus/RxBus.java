@@ -69,7 +69,7 @@ public class RxBus {
      */
     public void toObserverableOnMainThread(final String tag, final RxBusResult rxBusResult) {
 
-        _bus.observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Object>() {
+        _bus.onBackpressureDrop().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Object>() {
             @Override
             public void call(Object o) {
                 if (sendtags.containsKey(tag)) {
@@ -87,7 +87,7 @@ public class RxBus {
      */
     public void toObserverableChildThread(final String tag, final RxBusResult rxBusResult) {
 
-        _bus.observeOn(Schedulers.io()).subscribe(new Action1<Object>() {
+        _bus.onBackpressureDrop().observeOn(Schedulers.io()).subscribe(new Action1<Object>() {
             @Override
             public void call(Object o) {
                 if (sendtags.containsKey(tag)) {
