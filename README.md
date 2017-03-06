@@ -11,7 +11,7 @@
  first add dependences
 ```
   dependencies {
-    compile 'com.trycatch.android:myupdateapklibrary:1.2.8'
+    compile 'com.trycatch.android:myupdateapklibrary:1.3.2'
   }
 ```
 
@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         UpdateKey.API_TOKEN = "160105e0223dec1896a6648b8265cc95";
         UpdateKey.APP_ID = "57d75987ca87a87c89000b91";
-        UpdateKey.WITH_DIALOG=true;
-        UpdateKey.WITH_NOTIFITION=true;
+        UpdateKey.WITH_DIALOG=true; //设置是否显示弹出带进度条框
+        UpdateKey.WITH_NOTIFITION=true;//设置是否在NOTIFITION上显示进度
         UpdateApk.init(this);
     }
 
