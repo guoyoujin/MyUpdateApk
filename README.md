@@ -11,7 +11,7 @@
  first add dependences
 ```
   dependencies {
-    compile 'com.trycatch.android:myupdateapklibrary:1.4.2'
+    compile 'com.trycatch.android:myupdateapklibrary:1.4.4'
   }
 ```
 
@@ -107,6 +107,18 @@ UpdateApk.setAppUpdateListener(new AppUpdateListener() {
 AndroidManifest.xml
 ```
 <service android:name="com.trycath.myupdateapklibrary.service.DownloadFileService" />
+<!-- 如果你的app支持android7.0及以上，那么在android apk的时候临时给app授权访问文件的权限-->
+<provider
+    android:name="android.support.v4.content.FileProvider"
+    android:authorities="${applicationId}.provider.download"
+    android:exported="false"
+    android:grantUriPermissions="true">
+
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_paths"/>
+
+</provider>
 
 ```
 ## License
